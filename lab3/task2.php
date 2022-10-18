@@ -1,24 +1,24 @@
 <?php
 class Point {
 	protected $x;
-    protected $y;
+    	protected $y;
 	protected $z;
 	
 	public function __construct() {
-        $arguments = func_get_args();
-        $numberOfArguments = func_num_args();
+        	$arguments = func_get_args();
+        	$numberOfArguments = func_num_args();
 
-        if (method_exists($this, $function = 'pointConstruct'.$numberOfArguments)) {
-            call_user_func_array(array($this, $function), $arguments);
-        }
-    }
+        	if (method_exists($this, $function = 'pointConstruct'.$numberOfArguments)) {
+            		call_user_func_array(array($this, $function), $arguments);
+        	}
+    	}
 	function pointConstruct2($x, $y) {
 		$this->x = $x;
-        $this->y = $y;
+        	$this->y = $y;
 	}
 	function pointConstruct3($x, $y, $z) {
 		$this->x = $x;
-        $this->y = $y;
+        	$this->y = $y;
 		$this->z = $z;
 	}
 	function __destruct() {
@@ -27,8 +27,8 @@ class Point {
 			$msg .= ", $this->z";
 		}
 		$msg .= ") is destroying <br>";
-        echo $msg;
-    }
+        	echo $msg;
+    	}
 	function getDataAsStr() {
 		$str = "Point:<br>";
 		$str .= "x = $this->x <br>";
@@ -49,13 +49,13 @@ class ColoredPoint extends Point {
 	private $color;
 	
 	public function __construct() {
-        $arguments = func_get_args();
-        $numberOfArguments = func_num_args();
+        	$arguments = func_get_args();
+        	$numberOfArguments = func_num_args();
 
-        if (method_exists($this, $function = 'coloredPointConstruct'.$numberOfArguments)) {
-            call_user_func_array(array($this, $function), $arguments);
-        }
-    }
+        	if (method_exists($this, $function = 'coloredPointConstruct'.$numberOfArguments)) {
+            		call_user_func_array(array($this, $function), $arguments);
+        	}
+    	}
 	function coloredPointConstruct3($x, $y, $color) {
 		parent::__construct($x, $y);
 		$this->color=$color;
@@ -70,8 +70,8 @@ class ColoredPoint extends Point {
 			$msg .= ", $this->z";
 		}
 		$msg .= ") $this->color is destroying<br>";
-        echo $msg;
-    }
+        	echo $msg;
+    	}
 	function getDataAsStr() {
 		$str = parent::getDataAsStr();
 		$str .= "color =  $this->color <br>";
