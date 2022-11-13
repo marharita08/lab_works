@@ -41,6 +41,10 @@ class Patient {
 		}
 		exit('Невідома властивість');
 	}
+	
+	public function __call($name, $arguments) { 
+		echo "Виклик невідомого методу - $name <br>"; 
+	} 
 }
 $surnames = array("Johnson", "Smith", "Lake");
 $ages = array(25, 40, 36);
@@ -56,6 +60,7 @@ foreach($patients as $patient) {
 	echo "Card number: $patient->cardNumber<br>";
 	echo "Surname: $patient->surname<br>";
 	echo "Age: $patient->age<br>";
+	$patient->getName();
 	echo "</p>";
 }
 $patients[0]->cardNumber = -1;
