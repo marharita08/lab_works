@@ -1,25 +1,29 @@
-<?php 
-class Point {
-	private $x;
-	private $y;
-	public function __construct($x, $y) {
-		$this->x = $x;
-		$this->y = $y;
+<?php
+trait my_first_trait {
+	public function traitFunction() {
+		echo "Hello world <br>";
 	}
-	public function __get($name) {
-		echo "Звертаємося до властивості $name<br/>";
-		return $this->$name;
-	}
-	public function __set($name, $value) {
-		$this->$name = $value;
-		echo "Властивості $name присвоєно значення $value <br/>";
+	public function greetings() {
+		$currTime = time();
+		$morningStart = date_timestamp_get(DateTime::createFromFormat('h:i a', "04:00 am"));
+		$afternoonStart = date_timestamp_get(DateTime::createFromFormat('h:i a', "12:00 pm"));
+		$eveningStart = date_timestamp_get(DateTime::createFromFormat('h:i a', "05:00 pm"));
+		$nightStart = date_timestamp_get(DateTime::createFromFormat('h:i a', "09:00 pm"));
+		if ($currTime >= $morningStart && $currTime < $afternoonStart) {
+			echo "Good morning<br>";
+		} else if ($currTime >= $afternoonStart && $currTime < $eveningStart) {
+			echo "Good afternoon<br>";
+		} else if ($currTime >= $eveningStart && $currTime < $nightStart) {
+			echo "Good evening<br>";
+		} else {
+			echo "Good night<br>";
+		}
 	}
 }
-$p = new Point(8, 16);
-echo "x: $p->x<br/>";
-echo "y: $p->y<br/>"; 
-$p->x = 5;
-$p->y = 10;
-echo "x: $p->x<br/>";
-echo "y: $p->y<br/>"; 
+class helloWorld {
+	use my_first_trait; 
+}
+$objTest = new HelloWorld();
+$objTest->traitFunction();
+$objTest->greetings();
 ?>

@@ -1,63 +1,41 @@
 <?php
-class Patient {
- 	private $surname;
-  	private $age;
-  	private $cardNumber;
-	
-	public function __set($name, $value) {
-		if ($name == 'age') {
-			$this->checkAge($value);
-			$this->age = $value;
-		} else if ($name == 'surname') {
-			$this->checkSurname($value);
-			$this->surname = $value;
-		} else if ($name == 'cardNumber'){
-			$this->checkCardNumber($value);
-			$this->cardNumber = $value;
-		} else {
-			exit ("Невідома властивість");
-		}
-	}
-	
-	private function checkAge($age) {
-		if (!(is_integer($age) && $age >= 0 && $age < 150)) {
-			exit ("Некоректний вік");
-		}
-	}
-	private function checkSurname($surname) {
-		if ($surname == '') {
-			exit ("Некоректне ім'я");
-		}
-	}
-	private function checkCardNumber($cardNumber) {
-		if (!(is_integer($cardNumber) && $cardNumber >= 0)) {
-			exit ("Некоректний номер карти");
-		}
-	}
-
-  	public function __get($name) {
-		if ($name == 'age' || $name == 'surname' || $name == 'cardNumber') {
-			return $this->$name;
-		}
-		exit('Невідома властивість');
+interface ILoger{
+	public function logDate();
+	public function logMessage($message);
+}
+trait LogDate {
+	function logDate() {
+		fwrite($this->file, date("F j, Y, g:i a") . " ");
 	}
 }
-$surnames = array("Johnson", "Smith", "Lake");
-$ages = array(25, 40, 36);
-$patients = array();
-for($i=0;$i<3;$i++) {
-   	$patients[$i] = new Patient();
-   	$patients[$i]->surname = $surnames[$i];
-   	$patients[$i]->age = $ages[$i];
-   	$patients[$i]->cardNumber = $i+1;
+trait LogMessage {
+	function logMessage($message) {
+		fwrite($this->file, "$message\n");
+	}
 }
-foreach($patients as $patient) {
-	echo "<p>";
-	echo "Card number: $patient->cardNumber<br>";
-	echo "Surname: $patient->surname<br>";
-	echo "Age: $patient->age<br>";
-	echo "</p>";
+class FileLoger implements ILoger{
+	use LogDate, LogMessage;
+	private $file;
+	private $logFile;
+	public function __construct($filename,$mode = 'a'){
+		$this->logFile = $filename;
+		$this->file = fopen($filename, $mode) 
+		or die('Could not open the log file');
+	}
+	public function __destruct(){
+		if($this->file){
+			fclose($this->file);
+		}
+	}
 }
-$patients[0]->cardNumber = -1;
-
+if(isset($_GET['message'])) {
+	$logger = new FileLoger("log.txt");
+	$logger->logDate();
+	$logger->logMessage($_GET['message']);
+}
 ?>
+<form name="form" action="" method="get">
+  <input type="text" name="message" id="message"/>
+  <button type="submit">Submit</button>
+</form>
+
